@@ -21,7 +21,7 @@ class FaceStore: Codable {
     func saveItems() {
         do {
             let data = try JSONEncoder().encode(items)
-            try data.write(to: saveURL)
+            try data.write(to: saveURL, options: [.atomic, .completeFileProtection])
         } catch {
             print("保存失敗 \(error)")
         }
