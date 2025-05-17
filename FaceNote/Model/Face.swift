@@ -6,7 +6,7 @@
 import Foundation
 import PhotosUI
 
-struct Face: Identifiable, Codable {
+struct Face: Identifiable, Codable, Comparable {
     var id = UUID()
     let name: String
     let photoData: Data?
@@ -22,5 +22,8 @@ struct Face: Identifiable, Codable {
         return UIImage(data: photoData)
     }
     
+    static func<(lhs: Face, rhs: Face) -> Bool {
+        lhs.name < rhs.name
+    }
     
 }

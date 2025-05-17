@@ -10,7 +10,7 @@ import SwiftUI
 
 @Observable
 class FaceStore: Codable {
-    var items: [Face] = []
+    var items: [Face] = [].sorted()
     
     
     private var saveURL: URL {
