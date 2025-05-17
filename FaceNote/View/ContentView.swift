@@ -22,47 +22,6 @@ struct ContentView: View {
     var body: some View {
         
         NavigationStack {
-            PhotosPicker(selection: $selectedItem) {
-                Text("写真追加")
-            }
-            .onChange(of: selectedItem) {
-                Task {
-                    guard let data = try? await selectedItem?.loadTransferable(type: Data.self) else { return }
-                    guard let uiImage = UIImage(data: data) else { return }
-                    
-                    tempImage = uiImage
-                    
-                    locationFetcher.start()
-                    
-                    if let location = locationFetcher.lastKnownLocation {
-                        tempLocation = location
-                    }
-                    
-                    nameAlert = true
-                    
-                }
-            }
-            .alert("名前を入力", isPresented: $nameAlert) {
-                TextField("名前", text: $tempName)
-                Button("保存") {
-                    nameAlert = false
-                    
-                    if let image = tempImage {
-                        viewModel.store.items.append(Face(name: tempName, photo: image, coordinate: tempLocation))
-                    }
-                    
-                    tempImage = nil
-                    tempName = ""
-                    selectedItem = nil
-                    tempLocation = nil
-                }
-                Button("キャンセル", role: .cancel) {
-                    tempImage = nil
-                    tempName = ""
-                    selectedItem = nil
-                    tempLocation = nil
-                }
-            }
             List {
                 ForEach(viewModel.store.items.sorted()) { item in
                     NavigationLink(value: item) {
@@ -82,6 +41,51 @@ struct ContentView: View {
             }
             .navigationDestination(for: Face.self) { item in
                 DetailView(item: item)
+            }
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    PhotosPicker(selection: $selectedItem) {
+                        Image(systemName: "plus")
+                    }
+                    .onChange(of: selectedItem) {
+                        Task {
+                            guard let data = try? await selectedItem?.loadTransferable(type: Data.self) else { return }
+                            guard let uiImage = UIImage(data: data) else { return }
+                            
+                            tempImage = uiImage
+                            
+                            locationFetcher.start()
+                            
+                            if let location = locationFetcher.lastKnownLocation {
+                                tempLocation = location
+                            }
+                            
+                            nameAlert = true
+                            
+                        }
+                    }
+                    .alert("名前を入力", isPresented: $nameAlert) {
+                        TextField("名前", text: $tempName)
+                        Button("保存") {
+                            nameAlert = false
+                            
+                            if let image = tempImage {
+                                viewModel.store.items.append(Face(name: tempName, photo: image, coordinate: tempLocation))
+                            }
+                            
+                            tempImage = nil
+                            tempName = ""
+                            selectedItem = nil
+                            tempLocation = nil
+                        }
+                        Button("キャンセル", role: .cancel) {
+                            tempImage = nil
+                            tempName = ""
+                            selectedItem = nil
+                            tempLocation = nil
+                        }
+                    }
+                }
             }
             
         }

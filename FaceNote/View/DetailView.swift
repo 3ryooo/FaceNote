@@ -13,6 +13,7 @@ struct DetailView: View {
     var body: some View {
         Text(item.name)
             .font(.title.weight(.heavy))
+            .padding(.top)
         if let image = item.photo {
             Image(uiImage: image)
                 .resizable()
