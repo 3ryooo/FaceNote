@@ -15,6 +15,8 @@ struct ContentView: View {
     @State private var nameAlert = false
     @State private var tempName = ""
     @State private var tempImage: UIImage? = nil
+    @State private var tempLocation: CLLocationCoordinate2D? = nil
+    @StateObject private var locationFetcher = LocationFetcher()
     
     
     var body: some View {
@@ -30,6 +32,16 @@ struct ContentView: View {
                     
                     tempImage = uiImage
                     
+                    
+                    
+                    locationFetcher.start()
+                    
+                    print("test")
+                    
+                    if let location = locationFetcher.lastKnownLocation {
+                        tempLocation = location
+                    }
+                    
                     nameAlert = true
                     
                 }
@@ -40,17 +52,19 @@ struct ContentView: View {
                     nameAlert = false
                     
                     if let image = tempImage {
-                        viewModel.store.items.append(Face(name: tempName, photo: image))
+                        viewModel.store.items.append(Face(name: tempName, photo: image, coordinate: tempLocation))
                     }
                     
                     tempImage = nil
                     tempName = ""
                     selectedItem = nil
+                    tempLocation = nil
                 }
                 Button("キャンセル", role: .cancel) {
                     tempImage = nil
                     tempName = ""
                     selectedItem = nil
+                    tempLocation = nil
                 }
             }
             List {

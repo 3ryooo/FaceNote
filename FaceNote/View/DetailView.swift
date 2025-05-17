@@ -4,6 +4,7 @@
 //
 
 import SwiftUI
+import MapKit
 
 struct DetailView: View {
     
@@ -17,9 +18,14 @@ struct DetailView: View {
                 .resizable()
                 .scaledToFit()
         }
+        Map {
+            if let location = item.coordinate {
+                Marker("Spot", coordinate: location)
+            }
+        }
     }
 }
 
 #Preview {
-    DetailView(item: Face(name: "test", photo: UIImage(systemName: "photo")))
+    DetailView(item: Face(name: "test", photo: UIImage(systemName: "photo"), coordinate: nil))
 }
