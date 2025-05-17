@@ -6,7 +6,7 @@
 import Foundation
 import PhotosUI
 
-struct Face: Identifiable, Codable, Comparable {
+struct Face: Identifiable, Codable, Comparable, Hashable {
     var id = UUID()
     let name: String
     let photoData: Data?
