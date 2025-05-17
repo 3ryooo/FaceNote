@@ -16,7 +16,7 @@ extension ContentView {
 
 @Observable
 class FaceStore: Codable {
-    var items: [Face] = [].sorted()
+    var items: [Face] = []
     
     
     private var saveURL: URL {
