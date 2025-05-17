@@ -32,11 +32,7 @@ struct ContentView: View {
                     
                     tempImage = uiImage
                     
-                    
-                    
                     locationFetcher.start()
-                    
-                    print("test")
                     
                     if let location = locationFetcher.lastKnownLocation {
                         tempLocation = location
